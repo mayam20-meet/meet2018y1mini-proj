@@ -8,6 +8,29 @@ Date:
 """
 import turtle
 import random #We'll need this later in the lab
+turtle.bgcolor("green")
+lines = turtle.clone()
+lines.penup()
+lines.hideturtle()
+lines.goto(0,300)
+lines.pencolor("white")
+lines.write("~Snake Game~", align = 'center' , front=("Arial", 30, "normal"))
+lines.penup()
+lines.goto(0,250)
+lines.pendown()
+lines.goto(400,250)
+lines.goto(400,-250)
+lines.goto(-400,-250)
+lines.goto(-400,250)
+lines.goto(0,-250)
+lines.penup()
+
+
+
+
+
+
+
 
 turtle.tracer(1,0) #This helps the turtle move more smoothly
 
@@ -18,7 +41,7 @@ turtle.setup(SIZE_X, SIZE_Y) #Curious? It's the turtle window
 turtle.penup()
 
 SQUARE_SIZE = 20
-START_LENGTH = 6
+START_LENGTH = 8
 
 #Initialize lists
 pos_list = []
@@ -28,6 +51,7 @@ food_stamps = []
 
 #Set up positions (x,y) of boxes that make up the snake
 snake = turtle.clone()
+snake.color("white")
 snake.shape("square")
 
 #Hide the turtle object (it's an arrow - we don't need to see it)
@@ -159,83 +183,85 @@ def make_food():
         ##3.WRITE YOUR CODE HERE: Add the food turtle's stamp to the food stamps list
 
 def move_snake():
-       ######## SPECIAL PLACE - Remember it for Part 5
-    global food_stamps, food_pos
-    #If snake is on top of food item
-    if snake.pos() in food_pos:
-        food_ind=food_pos.index(snake.pos()) #What does this do?
-        food.clearstamp(food_stamps[food_ind]) #Remove eaten food                 
+     ######## SPECIAL PLACE - Remember it for Part 5
+     global food_stamps, food_pos
+     #If snake is on top of food item
+     if snake.pos() in food_pos:
+          food_ind=food_pos.index(snake.pos()) #What does this do?
+          food.clearstamp(food_stamps[food_ind]) #Remove eaten food                 
                                                #stamp
-        food_pos.pop(food_ind) #Remove eaten food position
-        food_stamps.pop(food_ind)
-        print("You have eaten the food")
+          food_pos.pop(food_ind) #Remove eaten food position
+          food_stamps.pop(food_ind)
+          print("You have eaten the food")
+        
+     else:
+          old_stamp = stamp_list.pop(0)
+          snake.clearstamp(old_stamp)
+          pos_list.pop(0)
 
 
 
+     my_pos = snake.pos()
+     x_pos = my_pos[0]
+     y_pos = my_pos[1]
 
-    my_pos = snake.pos()
-    x_pos = my_pos[0]
-    y_pos = my_pos[1]
-    
-    if direction==RIGHT:
+     if direction==RIGHT:
         snake.goto(x_pos + SQUARE_SIZE, y_pos)
         print("You moved right!")
-    elif direction==LEFT:
+     elif direction==LEFT:
         snake.goto(x_pos - SQUARE_SIZE, y_pos)
         print("You moved left")
-    elif direction==UP:
+     elif direction==UP:
         snake.goto(x_pos, SQUARE_SIZE + y_pos)
         print("You moved up")
-    elif direction==DOWN:
+     elif direction==DOWN:
         snake.goto(x_pos,  y_pos - SQUARE_SIZE)
         print("You moved down")
-    #4. Write the conditions for UP and DOWN on your own
-    ##### YOUR CODE HERE
-   
-    #Stamp new element and append new stamp in list
-    #Remember: The snake position changed - update my_pos()
+     #4. Write the conditions for UP and DOWN on your own
+     ##### YOUR CODE HERE
 
-    my_pos=snake.pos() 
-    pos_list.append(my_pos)
-    new_stamp = snake.stamp()
-    stamp_list.append(new_stamp)
-    ######## SPECIAL PLACE - Remember it for Part 5
-    #pop zeroth element in pos_list to get rid of last the last 
-    #piece of the tail
-    old_stamp = stamp_list.pop(0)
-    snake.clearstamp(old_stamp)
-    pos_list.pop(0)
-    new_pos = snake.pos()
-    new_x_pos = new_pos[0]
-    new_y_pos = new_pos[1]
-    if new_x_pos >= RIGHT_EDGE:
+     #Stamp new element and append new stamp in list
+     #Remember: The snake position changed - update my_pos()
+
+     my_pos=snake.pos() 
+     pos_list.append(my_pos)
+     new_stamp = snake.stamp()
+     stamp_list.append(new_stamp)
+     ######## SPECIAL PLACE - Remember it for Part 5
+     #pop zeroth element in pos_list to get rid of last the last 
+     #piece of the tail
+
+     new_pos = snake.pos()
+     new_x_pos = new_pos[0]
+     new_y_pos = new_pos[1]
+     if new_x_pos >= RIGHT_EDGE:
         print("You hit the right edge! Game over!")
         quit()
-    if new_y_pos >= UP_EDGE:
+     if new_y_pos >= UP_EDGE:
         print("You hit the up edge! Game over!")
         quit()
-    if new_x_pos <= LEFT_EDGE:
+     if new_x_pos <= LEFT_EDGE:
         print("You hit the left edge! Game over!")
         quit()
-    if new_y_pos <= DOWN_EDGE:
+     if new_y_pos <= DOWN_EDGE:
         print("You hit the down edge! Game over!")
         quit()
 
 
 
-    if len(food_stamps) <= 6:
+     if len(food_stamps) <= 6:
          make_food()
 
-    #HINT: This if statement may be useful for Part 8
+     #HINT: This if statement may be useful for Part 8
 
-    #Don't change the rest of the code in move_snake() function:
-    #If you have included the timer so the snake moves 
-    #automatically, the function should finish as before with a 
-    #call to ontimer()
-    turtle.ontimer(move_snake,TIME_STEP) #<--Last line of function
-
-
-
+     #Don't change the rest of the code in move_snake() function:
+     #If you have included the timer so the snake moves 
+     #automatically, the function should finish as before with a 
+     #call to ontimer()
+     turtle.ontimer(move_snake,TIME_STEP) #<--Last line
+     if snake.pos()in pos_list[:-1]:
+          print("You hit yourself! Game over!")
+          quit()
 
 
 
