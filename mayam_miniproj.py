@@ -8,28 +8,12 @@ Date:
 """
 import turtle
 import random #We'll need this later in the lab
-turtle.bgcolor("green")
-lines = turtle.clone()
-lines.penup()
-lines.hideturtle()
-lines.goto(0,300)
-lines.pencolor("white")
-lines.write("~Snake Game~", align = 'center' , front=("Arial", 30, "normal"))
-lines.penup()
-lines.goto(0,250)
-lines.pendown()
-lines.goto(400,250)
-lines.goto(400,-250)
-lines.goto(-400,-250)
-lines.goto(-400,250)
-lines.goto(0,-250)
-lines.penup()
+import time
 
+turtle.bgcolor("yellow")
 
-
-
-
-
+gameover = turtle.clone()
+gameover.color("white")
 
 
 turtle.tracer(1,0) #This helps the turtle move more smoothly
@@ -51,20 +35,20 @@ food_stamps = []
 
 #Set up positions (x,y) of boxes that make up the snake
 snake = turtle.clone()
-snake.color("white")
-snake.shape("square")
+snake.color("black")
+snake.shape("circle")
 
 #Hide the turtle object (it's an arrow - we don't need to see it)
 turtle.hideturtle()
 
    
-turtle.register_shape("trash.gif") #Add trash picture
+turtle.register_shape("burger.gif") #Add trash picture
                       # Make sure you have downloaded this shape 
                       # from the Google Drive folder and saved it
                       # in the same folder as this Python script
 
 food = turtle.clone()
-food.shape("trash.gif") 
+food.shape("burger.gif") 
 food.hideturtle()
 #Locations of food
 food_pos = [(100,100), (-100,100), (-100,-100), (100,-100)]
@@ -181,6 +165,10 @@ def make_food():
         ##                        position 
         ##2.WRITE YOUR CODE HERE: Add the food turtle's position to the food positions list
         ##3.WRITE YOUR CODE HERE: Add the food turtle's stamp to the food stamps list
+i = 0
+score=turtle.clone()
+score.pencolor("white")
+
 
 def move_snake():
      ######## SPECIAL PLACE - Remember it for Part 5
@@ -193,14 +181,22 @@ def move_snake():
           food_pos.pop(food_ind) #Remove eaten food position
           food_stamps.pop(food_ind)
           print("You have eaten the food")
-        
+          global i
+          i = i + 1
+          print(i)
+          score.penup()
+          score.goto(-400, -250)
+          score.pendown()
+          score.clear()
+          score.write(i, font=("Impact", 20, "normal"))
+
      else:
           old_stamp = stamp_list.pop(0)
           snake.clearstamp(old_stamp)
           pos_list.pop(0)
 
-
-
+          
+          
      my_pos = snake.pos()
      x_pos = my_pos[0]
      y_pos = my_pos[1]
@@ -236,15 +232,23 @@ def move_snake():
      new_y_pos = new_pos[1]
      if new_x_pos >= RIGHT_EDGE:
         print("You hit the right edge! Game over!")
+        gameover.write('GAME OVER!' , align = 'center' , font=('impact' , 100, "normal"))
+        time.sleep(5)
         quit()
      if new_y_pos >= UP_EDGE:
         print("You hit the up edge! Game over!")
+        gameover.write('GAME OVER!' , align = 'center' , font=('impact' , 100, "normal"))
+        time.sleep(5)
         quit()
      if new_x_pos <= LEFT_EDGE:
         print("You hit the left edge! Game over!")
+        gameover.write('GAME OVER!' , align = 'center' , font=('impact' , 100, "normal"))
+        time.sleep(5)
         quit()
      if new_y_pos <= DOWN_EDGE:
         print("You hit the down edge! Game over!")
+        gameover.write('GAME OVER!' , align = 'center' , font=('impact' , 100, "normal"))
+        time.sleep(5)
         quit()
 
 
